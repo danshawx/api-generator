@@ -688,7 +688,8 @@ def main():
         sys.exit(1)
 
     # TODO Add options for outputting header or source files
-    options, arguments = getopt.getopt(sys.argv[1:], 'hp:s:v:fg')
+    #options, arguments = getopt.getopt(sys.argv[1:], 'hp:s:v:fg')
+    options, arguments = getopt.getopt(sys.argv[1:], 'hpsvfg')
 
     if 0 == len(arguments):
         raise Exception('missing schema file')
@@ -712,9 +713,11 @@ def main():
                 raise Exception('invalid C prefix:', arg)
             prefix = arg
         elif opt in ('-s'):
-            stubs = interface.find('stubs')
-            for node in stubs:
-                if 'stub' == node.tag:
+            #stubs = interface.find('stubs')
+            #for node in stubs:
+            for node in interface:
+                #if 'stub' == node.tag:
+                if 'interface' == node.tag:
                     if arg == node.attrib.get('name'):
                         stub = node
                         prefix_stub = node.attrib.get('prefix')
@@ -725,7 +728,8 @@ def main():
                             stub_qualifier = qual
                 elif 'include' == node.tag:
                     stub_includes.append(node.text)
-            if None == stub:
+            #if None == stub:
+            if None == interface:
                 raise Exception('could not find stub named:', arg)
         elif opt in ('-v'):
             name_end = str(arg).find(':')
